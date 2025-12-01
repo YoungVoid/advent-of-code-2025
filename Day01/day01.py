@@ -1,4 +1,5 @@
 import math
+from rich import print
 
 def get_data(file_path: str) -> list[str]:
   data = []
@@ -46,7 +47,6 @@ def get_new_position(current_position: int, instruction: str) -> tuple[int, int]
 
 def main():
   file_path = str(input('File Path:\n>>> '))
-  print(file_path)
 
   data = get_data(file_path)
 
