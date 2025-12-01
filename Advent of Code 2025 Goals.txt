@@ -1,0 +1,5 @@
+Goals for this year's Advent of code:
+- Want to practice Git
+- Want to Learn and Practice RPGLE Built-in Functions
+- Want to Practice Clean Code Principles
+- Want to help family in Python - so may do a few in Python as well
