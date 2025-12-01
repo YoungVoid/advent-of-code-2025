@@ -1,3 +1,4 @@
+import math
 
 def get_data(file_path: str) -> list[str]:
   data = []
@@ -9,12 +10,18 @@ def get_data(file_path: str) -> list[str]:
 
 
 
-def get_new_position(current_position: int, instruction: str) -> int:
+def get_new_position(current_position: int, instruction: str) -> tuple[int, int]:
     direction = str(instruction[0])
     distance = int(instruction [1:])
     new_position = current_position
+    password_increments = 0
+
+    # Need to not count this twice - would already have been counted for in previous instruction
+    if current_position == 0 and direction == 'L':
+      password_increments -= 1
 
     if distance >= 100:
+      password_increments += math.floor(distance / 100)
       distance = distance % 100 
 
     if direction == 'L':
@@ -24,10 +31,15 @@ def get_new_position(current_position: int, instruction: str) -> int:
 
     if new_position < 0:
       new_position += 100
+      password_increments += 1
     elif new_position > 99:
       new_position -= 100
+      password_increments += 1
+    elif new_position == 0:
+      password_increments += 1
 
-    return new_position
+
+    return new_position, password_increments
 
 
 
@@ -44,11 +56,12 @@ def main():
   for instruction in data:
     direction = str(instruction[0])
     distance = int(instruction [1:])
+    password_increments = 0
 
-    current_position = get_new_position(current_position, instruction)
-
-    if current_position == 0:
-      password += 1
+    new_position, password_increments = get_new_position(current_position, instruction)
+    
+    current_position = new_position
+    password += password_increments
 
   print(f"Password: {password}")
     
