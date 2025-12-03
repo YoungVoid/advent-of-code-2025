@@ -24,14 +24,14 @@ def main(file_path: str):
             
             number = str(max(working_list))
 
-            prev_number_pos = line_list.index(number)
+            prev_number_pos = line_list.index(number, prev_number_pos+1 if prev_number_pos != -1 else 0)
 
             number_string += number
-        print(number_string)
+        print(f"{line} | {number_string}")
 
         total += int(number_string)
     
-    print(total)
+    print(f"Total: {total}")
         
         
 
