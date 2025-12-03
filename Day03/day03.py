@@ -2,7 +2,7 @@
 def get_data(file_path: str) -> list[str]:
     with open(file_path, 'r') as f:
         data = f.readlines()
-    return data
+    return [line.strip() for line in data]
 
 
 def main(file_path: str):
@@ -14,13 +14,22 @@ def main(file_path: str):
     for line in data:
         line_list = list(line)
 
-        first_number = max(line_list[:-2])
-        first_number_pos = list(line).index(first_number)
+        number_string = ''
+        prev_number_pos = -1
+        for i in range(12):
+            number = ''
+            
+            # when i = 0, we need last 11 to not be touched, so until pos -11. when i = 1, we need last 10 not touched, so until pos -10
+            working_list = line_list[prev_number_pos+1:(i-11 if i - 11 < 0 else None)]
+            
+            number = str(max(working_list))
 
-        second_number = max(line_list[first_number_pos+1:])
-        
-        number = int(first_number + second_number)
-        total += number
+            prev_number_pos = line_list.index(number)
+
+            number_string += number
+        print(number_string)
+
+        total += int(number_string)
     
     print(total)
         
