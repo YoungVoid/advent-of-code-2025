@@ -20,14 +20,14 @@ def main(file_path: str):
             number = ''
             
             # when i = 0, we need last 11 to not be touched, so until pos -11. when i = 1, we need last 10 not touched, so until pos -10
-            working_list = line_list[prev_number_pos+1:(i-11 if i - 11 < 0 else None)]
+            first_unavailable_pos = i-11 if i-11 < 0 else None
+            working_list = line_list[prev_number_pos+1:first_unavailable_pos]
             
             number = str(max(working_list))
 
             prev_number_pos = line_list.index(number, prev_number_pos+1 if prev_number_pos != -1 else 0)
 
             number_string += number
-        print(f"{line} | {number_string}")
 
         total += int(number_string)
     
