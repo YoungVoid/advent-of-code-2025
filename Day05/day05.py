@@ -1,40 +1,42 @@
 from rich import print
 import bisect
 
-def get_data(file_path: str) -> tuple[list[list[int]], list[int]]:
+def get_data(file_path: str) -> list[list[int]]:
     with open(file_path, 'r') as f:
         data = f.readlines()
 
     blank_line_position = data.index('\n')
 
     fresh_range_data = [[int(num) for num in line.strip().split('-')] for line in data[0:blank_line_position]]
-    ingredient_id_list = [int(line.strip()) for line in data[blank_line_position+1:]]
 
-    return fresh_range_data, ingredient_id_list
+    return fresh_range_data
 
 
 def main(file_path: str):
 
-    fresh_range_data, ingredient_id_list = get_data(file_path)
-    ingredient_id_list = sorted(ingredient_id_list)
+    fresh_range_data = get_data(file_path)
+    # print(fresh_range_data)
+    fresh_range_data.sort()
 
     total = 0
-    fresh_list = []
-    fresh_ingredient_list = []
+    previous_end = 0
 
-    for fresh_from, fresh_to  in fresh_range_data:
-        lowPos = bisect.bisect_left(ingredient_id_list, fresh_from)
-        highPos = bisect.bisect_right(ingredient_id_list, fresh_to)
+    for range_list in fresh_range_data:
+        include_start = True
+        start, end = range_list
+        start = max(start, previous_end)
+        if start > end:
+            continue
 
+        if start <= previous_end:
+            include_start = False
+            start = previous_end
 
-        for fresh_ingredient in ingredient_id_list[lowPos:highPos]:
-            if fresh_ingredient not in fresh_ingredient_list:
-                fresh_ingredient_list.append(fresh_ingredient)
-        
+        total += (end-start) + (1 if include_start else 0)
+        previous_end = end
+        # print(f'Processing range:{range_list}\t{start}-{end}\t{total}')
 
-    print(len(fresh_ingredient_list))
-        
-        
+    print(total)
 
 
 
