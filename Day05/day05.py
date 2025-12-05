@@ -1,5 +1,4 @@
 from rich import print
-import bisect
 
 def get_data(file_path: str) -> list[list[int]]:
     with open(file_path, 'r') as f:
@@ -15,7 +14,6 @@ def get_data(file_path: str) -> list[list[int]]:
 def main(file_path: str):
 
     fresh_range_data = get_data(file_path)
-    # print(fresh_range_data)
     fresh_range_data.sort()
 
     total = 0
@@ -25,6 +23,7 @@ def main(file_path: str):
         include_start = True
         start, end = range_list
         start = max(start, previous_end)
+
         if start > end:
             continue
 
@@ -34,7 +33,6 @@ def main(file_path: str):
 
         total += (end-start) + (1 if include_start else 0)
         previous_end = end
-        # print(f'Processing range:{range_list}\t{start}-{end}\t{total}')
 
     print(total)
 
