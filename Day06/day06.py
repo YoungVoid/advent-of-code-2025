@@ -3,10 +3,7 @@ from rich import print
 def get_number_of_digits_per_line(list_of_number_list: list[list[str]]) -> int:
     number_of_digits_per_line = 0
     for list_of_numbers in list_of_number_list:
-        # print(''.join(list_of_numbers))
-        print(list_of_numbers)
         number_of_digits_per_line = max(number_of_digits_per_line, len(''.join(list_of_numbers)))
-    # number_of_digits_per_line = len(''.join(numbers[0]))
     return number_of_digits_per_line
 
 def get_list_with_numbers_equal_size(list_of_number_list: list[list[str]], number_of_digits_per_number: int, number_of_columns: int) -> list[list[str]]:
@@ -44,8 +41,6 @@ def get_exploded_numbers(list_of_number_list: list[list[str]]) -> list[list[str]
 def get_zipped_exploded_numbers(list_of_number_list: list[list[str]]) -> list[list[str]]:
     zipped_exploded_numbers = []
     for list_of_numbers in list_of_number_list:
-        # for numbers in list_of_number_list:
-        #     print(numbers)
         zipped_exploded_numbers.append(list(zip(*list_of_numbers)))
 
     return zipped_exploded_numbers
@@ -76,7 +71,6 @@ def get_data(file_path: str) -> tuple[list[list[int], list[str]]]:
     valid_calcs = {'*','+'}
 
     numbers = [[num.strip() if num not in ['','\n'] else '-' for num in line.split(' ')] for line in file_data[:-1]]
-    #sized_numbers = list(zip(*numbers))
     operators = [op for op in file_data[-1].split(' ') if op in valid_calcs]
     start_of_column_positions = [i for i in range(len(file_data[-1])) if file_data[-1][i] not in [' ','\n']]
 
@@ -101,91 +95,16 @@ def get_data(file_path: str) -> tuple[list[list[int], list[str]]]:
 
     reversed_numbers_and_list = get_reversed_numbers_and_list(numbers)
 
-    # from_up_to_down_list = []
-    # for list_of_number_list in reversed_numbers_and_list:
-    #     new_list = []
-    #     for i in range(number_of_digits_per_number):
-    #         new_list.append(''.join)
-
 
     new_list1 = group_numbers(reversed_numbers_and_list)
-    print(f'nlst: {new_list1}')
 
     exploded_numbers = get_exploded_numbers(new_list1)
 
-
-
     zipped_exploded_numbers = get_zipped_exploded_numbers(exploded_numbers)
 
     formatted_numbers = get_formatted_numbers(zipped_exploded_numbers)
-    print(numbers)
-    print(reversed_numbers_and_list)
-    print(exploded_numbers)
-    print(zipped_exploded_numbers)
-    print(formatted_numbers)
-
-    for lst in exploded_numbers:
-        print(f'\t{lst}')
     
     return formatted_numbers, operators
-
-
-
-def get_data_old(file_path: str) -> tuple[list[list[int]], list[str]]:
-    with open(file_path, 'r') as f:
-        file_data = f.readlines()
-
-    valid_calcs = {'*','+'}
-
-    numbers = [[num.strip() if num not in ['','\n'] else '-' for num in line.split(' ')] for line in file_data[:-1]]
-    #sized_numbers = list(zip(*numbers))
-    operators = [op for op in file_data[-1].split(' ') if op in valid_calcs]
-    reversed_operators = operators[::-1]
-    number_of_columns = len(operators)
-
-    number_of_digits_per_line = get_number_of_digits_per_line(numbers)
-
-    number_of_digits_per_number = number_of_digits_per_line / number_of_columns
-    
-    # print(f'digits(line): {number_of_digits_per_line}')
-    # print(f'digits(number): {number_of_digits_per_number}')
-    # print(f'cols: {number_of_columns}')
-
-    #
-    # List Formatting starts here
-    #
-    equal_size_numbers = get_list_with_numbers_equal_size(numbers,number_of_digits_per_number,number_of_columns)
-
-    zipped_numbers = list(zip(*equal_size_numbers))
-
-    reversed_numbers_and_list = get_reversed_numbers_and_list(zipped_numbers)
-
-    # from_up_to_down_list = []
-    # for list_of_number_list in reversed_numbers_and_list:
-    #     new_list = []
-    #     for i in range(number_of_digits_per_number):
-    #         new_list.append(''.join)
-
-    exploded_numbers = get_exploded_numbers(reversed_numbers_and_list)
-
-    zipped_exploded_numbers = get_zipped_exploded_numbers(exploded_numbers)
-
-    formatted_numbers = get_formatted_numbers(zipped_exploded_numbers)
-
-    # print(numbers)
-    print(f'digits(line): {number_of_digits_per_line}')
-    print(f'digits(number): {number_of_digits_per_number}')
-    print(f'cols: {number_of_columns}')
-    # print(f'sized: {equal_size_numbers}')
-    # print(f'zipped: {zipped_numbers}')
-    # print(f'reversed: {reversed_numbers_and_list}')
-    # print(f'exploded: {exploded_numbers}')
-    # print(f'zip exp: {zipped_exploded_numbers}')
-    # print(f'formatted: {formatted_numbers}')
-    # print(f'operators: {reversed_operators}')
-
-    return formatted_numbers, reversed_operators
-
 
 def calculate(list_of_number_list: tuple[int], operator: str) -> int:
     if operator == '*':
@@ -194,12 +113,10 @@ def calculate(list_of_number_list: tuple[int], operator: str) -> int:
         total = 0
 
     for number in list_of_number_list:
-        # print(number, operator, total)
         if operator == '*':
             total *= number
         elif operator == '+':
             total += number
-    # print(total)
     return total
 
 def main(file_path: str):
