@@ -39,7 +39,6 @@ def main(file_path: str):
         operator = operators[num_list_i]
         
         total += calculate(number_list, operator)
-        print(total)
 
 
     print(total)
