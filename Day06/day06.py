@@ -55,7 +55,7 @@ def get_formatted_numbers(list_of_number_list: list[list[str]]) -> list[list[int
     for list_of_numbers in list_of_number_list:
         new_list = []
         for num in list_of_numbers:
-            new_list.append(int(''.join(num)))
+            new_list.append(int(''.join(num).replace('-','')))
         formatted_numbers.append(new_list)
 
     return formatted_numbers
@@ -66,7 +66,7 @@ def get_data(file_path: str) -> tuple[list[list[int]], list[str]]:
 
     valid_calcs = {'*','+'}
 
-    numbers = [[num.strip() if num not in ['','\n'] else '0' for num in line.split(' ')] for line in file_data[:-1]]
+    numbers = [[num.strip() if num not in ['','\n'] else '-' for num in line.split(' ')] for line in file_data[:-1]]
     #sized_numbers = list(zip(*numbers))
     operators = [op for op in file_data[-1].split(' ') if op in valid_calcs]
     reversed_operators = operators[::-1]
@@ -119,10 +119,12 @@ def calculate(list_of_number_list: tuple[int], operator: str) -> int:
         total = 0
 
     for number in list_of_number_list:
+        print(number, operator, total)
         if operator == '*':
             total *= number
         elif operator == '+':
             total += number
+    print(total)
     return total
 
 def main(file_path: str):
