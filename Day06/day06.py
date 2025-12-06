@@ -38,9 +38,6 @@ def main(file_path: str):
         number_list = numbers[num_list_i]
         operator = operators[num_list_i]
         
-        # if number is None:
-        print(number_list)
-        print(f"op: {operator}")
         total += calculate(number_list, operator)
         print(total)
 
