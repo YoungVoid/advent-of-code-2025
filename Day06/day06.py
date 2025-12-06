@@ -4,13 +4,21 @@ def get_data(file_path: str) -> tuple[list[tuple[int]], list[str]]:
     with open(file_path, 'r') as f:
         file_data = f.readlines()
 
-    stripped_data = [line.strip() for line in file_data]
+    stripped_data = [line for line in file_data]
 
     valid_calcs = {'*','+'}
 
-    numbers = [[int(num) for num in line.split(' ') if num != ''] for line in stripped_data[:-1]]
+    numbers = [[num.strip() if num not in ['','\n'] else '0' for num in line.split(' ')] for line in stripped_data[:-1]]
     formatted_numbers = list(zip(*numbers))
     operators = [op for op in stripped_data[-1].split(' ') if op in valid_calcs]
+    number_of_columns = len(operators)
+    number_of_digits_per_number = 0
+    for number_list in numbers:
+        print(''.join(number_list))
+        number_of_digits_per_number = max(number_of_digits_per_number, len(''.join(number_list)))
+    print(numbers)
+    print(f'digits: {number_of_digits_per_number}')
+    print(f'cols: {number_of_columns}')
 
     return formatted_numbers, operators
 
@@ -34,14 +42,14 @@ def main(file_path: str):
 
     total = 0
 
-    for num_list_i in range(len(numbers)):
-        number_list = numbers[num_list_i]
-        operator = operators[num_list_i]
+    # for num_list_i in range(len(numbers)):
+    #     number_list = numbers[num_list_i]
+    #     operator = operators[num_list_i]
         
-        total += calculate(number_list, operator)
+    #     total += calculate(number_list, operator)
 
 
-    print(total)
+    # print(total)
 
 
 
