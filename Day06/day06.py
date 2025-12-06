@@ -93,12 +93,12 @@ def get_data(file_path: str) -> tuple[list[list[int], list[str]]]:
 
         numbers.append(numbers_on_line)
 
+
     reversed_numbers_and_list = get_reversed_numbers_and_list(numbers)
 
+    grouped_numbers = group_numbers(reversed_numbers_and_list)
 
-    new_list1 = group_numbers(reversed_numbers_and_list)
-
-    exploded_numbers = get_exploded_numbers(new_list1)
+    exploded_numbers = get_exploded_numbers(grouped_numbers)
 
     zipped_exploded_numbers = get_zipped_exploded_numbers(exploded_numbers)
 
