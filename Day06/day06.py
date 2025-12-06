@@ -15,7 +15,7 @@ def get_data(file_path: str) -> tuple[list[tuple[int]], list[str]]:
     return formatted_numbers, operators
 
 
-def calculate(number_list: list[int], operator: str) -> int:
+def calculate(number_list: tuple[int], operator: str) -> int:
     if operator == '*':
         total = 1
     else:
