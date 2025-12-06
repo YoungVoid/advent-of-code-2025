@@ -1,6 +1,7 @@
 # Things I've learned so far
 
 ## Generic
+Thinking a bit more about O(n^2) vs O(n) complexities
 
 ## Git
 
@@ -23,6 +24,15 @@ reflog interactions:
 47dd8a7 HEAD@{12}: commit: Day 2 Part 1 in Python
 ```
 
+I had Day 4 on work pc, and day 5 & 6 on main pc. To move over history, I did:
+```
+cd <repo to apply changes>
+git remote add <source_name> <repo_to_copy_from>
+git fetch <source_name>
+git cherry-pick <commit_hash_from_source_repo>
+```
+
+
 ## RPGLE
 - %Div to divide and get the integer portion
 - Reading an IFS file line by line with SQL is way way easier than the read-open-close stuff
@@ -42,3 +52,5 @@ reflog interactions:
 - `list.match(value, start=, end=)` and `list.index(value, start=, end=)` is the same thing, only `.index()` raises exception if value not found
 - `list(str)` will explode str value into a list, each digit it's own element
 - `import bisect` -> `bisect.bisect_left(sorted_list, value)` and `bisect_right` finds the position that a value would be inserted into a sorted list, ie `bisect.bisect_left([2,4,6], 5)` would return `2`.
+- `str.replace(value, replace_with)`
+- `zip(lists)` -> `list(zip(*list_containing_lists)`
