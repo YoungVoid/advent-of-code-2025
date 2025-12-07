@@ -15,11 +15,13 @@ Goals for this year's Advent of Code:
 
 Thinking a bit more about O(n^2) vs O(n) complexities
 
+Regarding recursive functions - consider caching results if there's a possibility that it gets called again. Sped up day 7 a ton (an hour without results to running in 0.2 seconds). Caching unneccessarily will just be an additional cost though.
+
 ### Git
 
 `git reflog`
 
-`git reflog --date=relative
+`git reflog --date=relative`
 
 `git log --oneline --graph`
 
@@ -53,8 +55,7 @@ git cherry-pick <commit_hash_from_source_repo>
     DECLARE c1 CURSOR FOR
     SELECT line FROM table(qsys2.ifs_read_utf8(path_name => :filePath));
 ```
-- remember sorta
-- 
+- remember `sorta array`
 
 
 
