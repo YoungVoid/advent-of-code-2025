@@ -1,9 +1,6 @@
 from rich import print
 import time
 
-class timeline_stats:
-    timeline_splits_value = 0
-    timeline_count = 0
 
 timeline_split_cache = {}
 
@@ -18,15 +15,19 @@ def get_data(file_path: str) -> list[str]:
 def run_timeline_and_get_splits_at_end(data: list[str], start_line, start_column) -> int:
     '''
     get map, line, column
-    run beam down until end of loop
-    if hit splitter
+
+    check in cache if value exists for this line+column combination and return if exists
+        
+    look for splitter
+    
+    if splitter found
         create left timeline
         create right timeline
-        break out of loop since this one wont end at bottom
-    else if hit end, return 1 (base case)
+        cache and return splits from above timelines
+
+    else no splitter, return 1 (base case)
+    
     '''
-    timeline_stats.timeline_count += 1
-    print(timeline_stats.timeline_count,timeline_stats.timeline_splits_value, start_line, start_column)
     cache_key = f'{start_line}, {start_column}'
     if cache_key in timeline_split_cache:
         return timeline_split_cache[cache_key]
@@ -39,8 +40,7 @@ def run_timeline_and_get_splits_at_end(data: list[str], start_line, start_column
     except ValueError:
         # No splitter found, means timeline reaches end - base case for recursion
         total_splits_at_end = 1
-        timeline_stats.timeline_splits_value += 1
-        
+
         timeline_split_cache[cache_key] = total_splits_at_end
         return total_splits_at_end
     
@@ -61,15 +61,8 @@ def main(file_path: str):
 
     start_column_position = data[0].index('S')
     start_line_position = 1
-    
-    start_time = time.perf_counter()
 
     total_splits = run_timeline_and_get_splits_at_end(data, start_line_position, start_column_position)
-
-    end_time = time.perf_counter()
-
-    elapsed_time = end_time - start_time
-    print(f'Run Time: {elapsed_time // 60}m {elapsed_time%60}s')
 
     print(total_splits)
     
@@ -78,4 +71,13 @@ def main(file_path: str):
 
 if __name__ == '__main__':
     file_path = str(input('File Path:\n>>> '))
+
+    start_time = time.perf_counter()
+
     main(file_path)
+
+    end_time = time.perf_counter()
+
+    elapsed_time = end_time - start_time
+
+    print(f'Run Time: {elapsed_time // 60}m {elapsed_time%60}s')
