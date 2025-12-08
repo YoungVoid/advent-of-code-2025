@@ -1,6 +1,9 @@
 import math
 import time
 
+
+point_connected_to_points_dict = {}
+
 def get_data(file_path: str) -> list[list[int]]:
     file_data = []
     with open(file_path, 'r') as f:
@@ -29,7 +32,6 @@ def print_point_combo_list(point_combo_list):
         print(f'{i} \t {point_combo}')
 
 def build_connected_dict(line) -> dict:
-    point_connected_to_points_dict = {}
 
     #print_point_combo_list(line)
 
@@ -90,30 +92,49 @@ def main(file_path: str):
             #print(data[i], data[j], get_distance(data[i], data[j]))
 
     sorted_by_distance_list = sorted(connected_points_list,key=get_distance)
+    print(len(sorted_by_distance_list))
 
-    # get closest 1000 for puzzle input but closest 10 for test
-    closest_list = sorted_by_distance_list[0: 1000 if len(sorted_by_distance_list) >= 1000 else 10]
+    circuits = []
+    closest_count = 1000 if len(sorted_by_distance_list) >= 1000 else 10
+    start_time = time.perf_counter()
+    while len(circuits) != 1:
+        if closest_count > len(sorted_by_distance_list):
+            print('couldnt find it')
+            return
+        if closest_count % 100 == 0:
+            end_time = time.perf_counter()
+            elapsed_time = end_time - start_time
+            print(f'marker: {closest_count} @ {elapsed_time // 60}m {elapsed_time%60:2f}s')
+        
+        closest_list = sorted_by_distance_list[0: closest_count]
 
-    connections_dict = build_connected_dict(closest_list)
+        connections_dict = build_connected_dict(closest_list)
 
-    # for key, value in connections_dict.items():
-    #     print(f'{key} : {value}')
+        # for key, value in connections_dict.items():
+        #     print(f'{key} : {value}')
 
-    circuits = build_circuit(connections_dict)
+        circuits = build_circuit(connections_dict)
 
+        closest_count += 1
 
-    # print('circuits')
-    # for circuit in circuits:
-    #     print(circuit)
+        # print('circuits')
+        # for circuit in circuits:
+        #     print(circuit)
 
     circuits_sorted_by_length = sorted(circuits, key=len, reverse=True)
 
-    answer = 1
-    for i in range(3):
-        answer *= len(circuits_sorted_by_length[i])
+    print(closest_list[-1])
 
-    #answer = 0
+    last_circuit = closest_list[-1][-1]
+    second_last_circuit = closest_list[-1][-2]
+
+    x1, y1, z1 = last_circuit
+    x2, y2, z2 = second_last_circuit
+
+    answer = int(x1) * int(x2)
+
     print(answer)
+
     
 
 if __name__ == '__main__':
