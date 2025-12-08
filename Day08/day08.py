@@ -33,8 +33,6 @@ def print_point_combo_list(point_combo_list):
 
 def build_connected_dict(line) -> dict:
 
-    #print_point_combo_list(line)
-
     for start_point, end_point in line:
         start_point = ','.join([str(c) for c in start_point])
         end_point = ','.join([str(c) for c in end_point])
@@ -77,53 +75,39 @@ def build_circuit(connected_points: dict) -> list[list[str]]:
     
     return circuits
 
-       
-
-
-def main(file_path: str):
-
-    data = get_data(file_path)
+def build_connected_points_list(data: list[list[int]]) -> list[list[list[int]]]:
 
     connected_points_list = []
 
     for i in range(len(data)):
         for j in range(i+1, len(data)):
             connected_points_list.append([data[i], data[j]])
-            #print(data[i], data[j], get_distance(data[i], data[j]))
+    
+    return connected_points_list
+
+
+def main(file_path: str):
+
+    data = get_data(file_path)
+
+    connected_points_list = build_connected_points_list(data)
 
     sorted_by_distance_list = sorted(connected_points_list,key=get_distance)
-    print(len(sorted_by_distance_list))
 
     circuits = []
     closest_count = 1000 if len(sorted_by_distance_list) >= 1000 else 10
-    start_time = time.perf_counter()
     while len(circuits) != 1:
         if closest_count > len(sorted_by_distance_list):
-            print('couldnt find it')
+            print('Couldnt find it')
             return
-        if closest_count % 100 == 0:
-            end_time = time.perf_counter()
-            elapsed_time = end_time - start_time
-            print(f'marker: {closest_count} @ {elapsed_time // 60}m {elapsed_time%60:2f}s')
         
         closest_list = sorted_by_distance_list[0: closest_count]
 
         connections_dict = build_connected_dict(closest_list)
 
-        # for key, value in connections_dict.items():
-        #     print(f'{key} : {value}')
-
         circuits = build_circuit(connections_dict)
 
         closest_count += 1
-
-        # print('circuits')
-        # for circuit in circuits:
-        #     print(circuit)
-
-    circuits_sorted_by_length = sorted(circuits, key=len, reverse=True)
-
-    print(closest_list[-1])
 
     last_circuit = closest_list[-1][-1]
     second_last_circuit = closest_list[-1][-2]
@@ -136,7 +120,6 @@ def main(file_path: str):
     print(answer)
 
     
-
 if __name__ == '__main__':
     file_path = str(input('File Path:\n>>> '))
 
