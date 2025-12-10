@@ -28,10 +28,11 @@ def get_light_bools(light_requirement:str):
 
 def get_instruction_result(button_sequence, light_length):
     result = [False for _ in range(light_length)]
-    count = 0
+
     for button in button_sequence:
         for light_pos in map(int, button[1:-1].split(',')):
             result[light_pos] = not result[light_pos]
+            
     return result
 
 def process_instruction_line_and_get_shortest_instruction(line):
@@ -39,25 +40,20 @@ def process_instruction_line_and_get_shortest_instruction(line):
     light_bools = get_light_bools(light_requirement)
 
     n = len(buttons)
-    button_permutations_all_sizes = []
+    
     for r in range(1, n+1):
-        
         button_permutation = permutations(buttons,r)
     
         for button_sequence in button_permutation:
-            #print(f'{button_sequence} | {light_bools}')
             instruction_result = get_instruction_result(button_sequence, len(light_bools))
-            #print(instruction_result) if instruction_result != [False, False, True, True] else None
             if instruction_result == light_bools:
                 return len(button_sequence)
     
-   # print(count(button_permutations_all_sizes))
 
 
 
 def main(file_path):
     data = get_data(file_path)
-    #print(data)
 
     total = 0
     for line in data:
